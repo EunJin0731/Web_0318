@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Calculator</h1>
+<input type="text" name="num1" id="num1" placeholder="숫자를 입력하세요">
+<select id="cal" name="cal">
+    <option value="add">+</option>
+    <option value="sub">-</option>
+    <option value="mul">*</option>
+    <option value="div">/</option>
+</select>
+<input type="text" name="num2" id="num2" placeholder="숫자를 입력하세요">
+<button onclick="send()">계산</button>
+<div id="display-response"><br>계산 값</div>
+</div>
+<script>
+    async function send() {
+        let num1 = $("#num1").val().trim();
+        let num2 = $("#num2").val().trim();
+        let cal = $("#cal").val().trim();
+        if (!num1 || num1 === '' || !num2 || num2 === '') {
+            $('#display-response').html("입력을 해주세요");
+            return;
+        }
+        try {
+            let response = await $.get("/calculator/" + num1 + "/" + num2 + "/" + cal);
+            $('#display-response').html(JSON.stringify(response));
+        } catch (err) {
+            $('#display-response').html(JSON.stringify(err));
+        } finally {
+            $('#display-response').html($('#display-response').html());
+        }
+    }
+</script>
+</body>
+</html>
